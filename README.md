@@ -25,4 +25,6 @@ You will need
  
 ### Example:
 
+![Toot](mytoot.png)
+
 
