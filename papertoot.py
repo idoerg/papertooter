@@ -22,8 +22,11 @@ def parse_info(url):
     html_doc = req.text
     soup = BS(html_doc, 'html.parser')
     doi = soup.find("meta", {"name": "citation_doi"})["content"]
+    # Commented out lines below are for arxiv.org Needs work
     title = soup.find("meta", {"name": "DC.Title"})["content"]
+    # title = soup.find("meta", {"name": "citation_title"})["content"]
     public_url = soup.find("meta", {"name": "citation_public_url"})["content"]
+    # public_url = soup.find("meta", {"name": "citation_pdf_url"})["content"]
     return (doi, title, public_url)
 
 def toot_article(hashtag, title, public_url):
