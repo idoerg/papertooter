@@ -4,7 +4,7 @@ A script to post manuscripts from BioRxiv to Mastodon using a unique hashtag bas
 ## Purpose
 The purpose of this program is to post ("toot") a [BioRxiv](https://www.biorxiv.org/) preprint on the Mastodon social network. You would need a Mastodon account, and you would need to connect it to Mastodon using Mastodon.py. To post the bioarxiv preprint you would run the following from the command line:
 
-`$ papertooter http://biorxiv.org/paper_url mastodon_credentials_file`
+`$ papertooter http://biorxiv.org/paper_url mastodon_client_credentials_file`
 
 This will create a post on Mastodon using your account with the paper title, a hashtag based on the paper DOI, and a link to the paper. 
 
