@@ -30,7 +30,7 @@ def toot_article(hashtag, title, public_url):
     toot = mastodon.toot(f'{title} {hashtag}\n {public_url}')
 
 if __name__ == '__main__':
-    doi, title, public_url = parse_info(sys.argv[1], sys.argv[2])    
+    doi, title, public_url = parse_info(sys.argv[1])    
     hashtag = doi_to_hashtag(doi)
     mastodon = Mastodon(access_token = sys.argv[2])
     toot_article(hashtag, title, public_url)
