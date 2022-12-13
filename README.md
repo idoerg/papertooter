@@ -11,8 +11,14 @@ This will create a post on Mastodon using your account with the paper title, a h
 ### Hashtag
 The hashtag is based on the paper DOI. In Biorxiv the DOI is composed of alphanumberic characters, slashes and periods. Because hashtags do not allow persiods and slashes, a `/` is converted to a `__` (double underscore) and a `.` is converted to a `_` (single underscore). This allows for a unique tagging of the manuscript. So the DOI `DOI:10.1101/2022.11.28.518265` will be converted to `#10_1101__2022_11_28_518265`.
 
+
+### Dependencies
+ + [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/)
+ + [requests](https://requests.readthedocs.io/en/latest/)
+ + [mastodon.py](https://github.com/halcy/Mastodon.py)
+ 
 ### Prerequsites
 You will need 
- + A Mastodon account, 
- + An installation of the Python wrapper for Mastodon, [Mastodon.py](https://github.com/halcy/Mastodon.py)
- + Mastodon user credentials so you could toot from the Python script. To learn how to do that, see the top of the README file in [Mastodon.py](https://github.com/halcy/Mastodon.py)
+ + A Mastodon account
+ + Mastodon user for the account wiht credentials so you could toot from the Python script. To learn how to generate the credentials, see the top of the README file in [Mastodon.py](https://github.com/halcy/Mastodon.py)
+ 
