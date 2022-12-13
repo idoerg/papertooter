@@ -9,5 +9,5 @@ The purpose of this program is to post ("toot") a BioRxiv preprint on the Mastod
 This will create a post on Mastodon using your account with the paper title, a hashtag based on the paper DOI, and a link to the paper. 
 
 ### Hashtag
-The hashtag is based on the paper DOI. In Biorxiv the DOI is composed of alphanumberic characters, slashes and periods. Because hashtags do not allow persiods and slashes, a `/` is converted to a `__` (double underscore) and a `.` is converted to a `_` (single underscore). This allows for a unique tagging of the manuscript.
+The hashtag is based on the paper DOI. In Biorxiv the DOI is composed of alphanumberic characters, slashes and periods. Because hashtags do not allow persiods and slashes, a `/` is converted to a `__` (double underscore) and a `.` is converted to a `_` (single underscore). This allows for a unique tagging of the manuscript. So the DOI `DOI:10.1101/2022.11.28.518265` will be converted to `#10_1101__2022_11_28_518265`.
 
