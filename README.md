@@ -22,3 +22,4 @@ You will need
  + A Mastodon account
  + Mastodon user for the account wiht credentials so you could toot from the Python script. To learn how to generate the credentials, see the top of the README file in [Mastodon.py](https://github.com/halcy/Mastodon.py)
  
+<iframe src="https://genomic.social/@papertoot/109508291436178104/embed" class="mastodon-embed" style="max-width: 100%; border: 0" width="400" allowfullscreen="allowfullscreen"></iframe><script src="https://genomic.social/embed.js" async="async"></script>
