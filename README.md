@@ -18,7 +18,7 @@ DOI, and a link to the paper.
 The hashtag is based on the paper DOI. In Biorxiv the DOI is composed of alphanumeric characters, slashes
 and periods. Because hashtags do not allow periods and slashes, a `/` is converted to a `__` (double
 underscore) and any other non-alphanumeric os underscore character is converted to a `_` (single
-underscore). This allows for a (mostly)  tagging of the manuscript. So the DOI `DOI:10.1101/2022.11.28.518265`
+underscore). This allows for a (mostly) unique tagging of the manuscript. So the DOI `DOI:10.1101/2022.11.28.518265`
 will be converted to `#10_1101__2022_11_28_518265`.
 
 
