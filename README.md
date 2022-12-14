@@ -8,7 +8,7 @@ The purpose of this program is to post ("toot") a [BioRxiv](https://www.biorxiv.
 You would need a Mastodon account, and you would need to connect it to Mastodon using Mastodon.py. To post
 the bioarxiv preprint you would run the following from the command line:
 
-`$ python papertoot.py -c mastodon_client_credentials_file http://biorxiv.org/paper_url `
+`$ python papertoot.py -c mastodon_user_credentials_file http://biorxiv.org/paper_url `
 
 This will create a post on Mastodon using your account with the paper title, a hashtag based on the paper
 DOI, and a link to the paper. 
