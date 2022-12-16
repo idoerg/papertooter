@@ -29,6 +29,9 @@ from mastodon import Mastodon
 ##############################################################################
 
 SHORT_DOI_URL = "https://shortdoi.org/"
+DOI_URL_RE = re.compile('http[s]{0,1}://doi.org')
+DOI_RE_P = re.compile('10\.[0-9]{4,}')
+DOI_RE = re.compile('10.\d{4,9}/[-._;()/:A-z0-9]+') 
 def shorten_doi(doi):
     doi_url = f"{SHORT_DOI_URL}{doi}?format=json"
     response = urlopen(doi_url)
@@ -53,47 +56,22 @@ def doi_to_hashtag(doi, to_shorten=True):
         hashtag = '#' + hashtag
     return hashtag
 
-def parse_biorxiv_info(soup):
-    ''' parses the doi, title, url, given a biorxiv or medrxiv url'''
-    doi = soup.find("meta", {"name": "citation_doi"})["content"]
-    title = soup.find("meta", {"name": "DC.Title"})["content"]
-    public_url = soup.find("meta", {"name": "citation_public_url"})["content"]
-    return (doi, title, public_url)
-
-def parse_arxiv_info(soup):
-    ''' parses the doi, title, url, given an arxiv url'''
-    doi = soup.find("meta", {"name": "citation_doi"})["content"]
-    title = soup.find("meta", {"name": "citation_title"})["content"]
-    public_url = soup.find("meta", {"property": "og:url"})["content"]
-    return (doi, title, public_url)
 
 def toot_article(hashtag, title, public_url):
     toot = mastodon.toot(f'{title} {hashtag}\n {public_url}')
 
-def archive_id(url):
-    '''
-    Identify the paper archive. 
-    '''
-    req = requests.get(url)
-    html_doc = req.text
-    site = None
-    soup = BS(html_doc, 'html.parser')
-    tag = soup.find("meta", {"property": "og:site_name"})
-    if tag:
-        if tag["content"].lower() == "arxiv.org":
-            site = "arxiv"
-        elif tag["content"].lower() == "biorxiv":
-            site = "biorxiv"
-        elif tag["content"].lower() == "medrxiv":
-            site = "medrxiv"
-    return site, soup
- 
+def get_doi(instr):
+    pos = re.search(DOI_RE, instr)
+    if not pos:
+        return None
+    doi = instr[pos.start():pos.end()]
+    return doi 
 
 def cli_parser():
     parser = argparse.ArgumentParser(
                 prog = "papertoot",
                 description = "Toots papers given their URLs")
-    parser.add_argument('url', help="url of paper you want to toot. Must start with https://doi.org/")
+    parser.add_argument('ident', help="identifier of paper you want to toot. Must contain a DOI, no trailing characters")
     parser.add_argument('-v', '--verbose', action='store_true', help="debug information mostly") 
     parser.add_argument('-s', '--silent', action='store_true', help="silent: do not toot") 
     parser.add_argument('-l', '--longdoi', action='store_true', help="long doi form for the hashtag (default: short doi)") 
@@ -119,14 +97,17 @@ if __name__ == '__main__':
 #    else:
 #        raise ValueError(f"url {url} not identified to be in a covered site (biorxiv, medrxiv, arxiv)")
     to_shorten = not args.longdoi
-    url = args.url
+    ident = args.ident
+    doi = get_doi(ident) 
+    if not doi:
+        raise ValueError("Does your identifier contain a DOI?")
+    url = f'https://doi.org/{doi}'
     try:
         pub_metadata = crossref_commons.retrieval.get_publication_as_json(url)
     except ValueError:
-        raise ValueError(f"Can't find publication. Did you provide a URL that starts with a doi.org? Is the URL active?\n{url}")
+        raise ValueError(f"Can't find publication. Did you provide an identifier that contains a DOI? Is the URL active?\n{url}")
 
     title = pub_metadata["title"][0]
-    doi = re.sub(r'http[s]{0,1}:\/\/doi.org\/','',url)
     hashtag = doi_to_hashtag(doi, to_shorten)
     public_url = url
     if args.verbose:
