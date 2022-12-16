@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup as BS
 import requests 
 from urllib.request import urlopen
 from urllib.error import HTTPError
-import crossref_commons.retrieval
 import json
 from mastodon import Mastodon
 
@@ -93,7 +92,7 @@ def cli_parser():
     parser = argparse.ArgumentParser(
                 prog = "papertoot",
                 description = "Toots papers given their URLs")
-    parser.add_argument('url', help="url of paper you want to toot. Must start with https://doi.org/")
+    parser.add_argument('url', help="url of paper you want to toot")
     parser.add_argument('-v', '--verbose', action='store_true', help="debug information mostly") 
     parser.add_argument('-s', '--silent', action='store_true', help="silent: do not toot") 
     parser.add_argument('-l', '--longdoi', action='store_true', help="long doi form for the hashtag (default: short doi)") 
@@ -106,8 +105,7 @@ if __name__ == '__main__':
     public_url = ''
     parser = cli_parser()
     args = parser.parse_args()
-
-#   This was stuff when papertoot was doing biorxiv / medrxiv arxiv only 
+#   This was stuff 
 #    site, soup = archive_id(args.url)
 #    to_shorten = not args.longdoi
 #    if site == "biorxiv" or site == "medrxiv":
@@ -119,16 +117,10 @@ if __name__ == '__main__':
 #    else:
 #        raise ValueError(f"url {url} not identified to be in a covered site (biorxiv, medrxiv, arxiv)")
     to_shorten = not args.longdoi
-    url = args.url
-    try:
-        pub_metadata = crossref_commons.retrieval.get_publication_as_json(url)
-    except ValueError:
-        raise ValueError(f"Can't find publication. Did you provide a URL that starts with a doi.org? Is the URL active?\n{url}")
-
-    title = pub_metadata["title"][0]
-    doi = re.sub(r'http[s]{0,1}:\/\/doi.org\/','',url)
+    pub_metadata = crossref_commons.retrieval.get_publication_as_json(url)
+    title = pub_metadata["title"]
     hashtag = doi_to_hashtag(doi, to_shorten)
-    public_url = url
+    
     if args.verbose:
         print(f"doi {doi}")
         print(f"title {title}")
