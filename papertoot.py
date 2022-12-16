@@ -71,7 +71,8 @@ def cli_parser():
     parser = argparse.ArgumentParser(
                 prog = "papertoot",
                 description = "Toots papers given their URLs")
-    parser.add_argument('ident', help="identifier of paper you want to toot. Must contain a DOI, no trailing characters")
+    parser.add_argument('ident', 
+           help="identifier of paper you want to toot. Must contain a DOI, no trailing characters")
     parser.add_argument('-v', '--verbose', action='store_true', help="debug information mostly") 
     parser.add_argument('-s', '--silent', action='store_true', help="silent: do not toot") 
     parser.add_argument('-l', '--longdoi', action='store_true', help="long doi form for the hashtag (default: short doi)") 
@@ -85,17 +86,6 @@ if __name__ == '__main__':
     parser = cli_parser()
     args = parser.parse_args()
 
-#   This was stuff when papertoot was doing biorxiv / medrxiv arxiv only 
-#    site, soup = archive_id(args.url)
-#    to_shorten = not args.longdoi
-#    if site == "biorxiv" or site == "medrxiv":
-#        doi, title, public_url = parse_biorxiv_info(soup)
-#        hashtag = doi_to_hashtag(doi, to_shorten)
-#    elif site == "arxiv":
-#        doi, title, public_url = parse_arxiv_info(soup)
-#        hashtag = doi_to_hashtag(doi, to_shorten)
-#    else:
-#        raise ValueError(f"url {url} not identified to be in a covered site (biorxiv, medrxiv, arxiv)")
     to_shorten = not args.longdoi
     ident = args.ident
     doi = get_doi(ident) 
