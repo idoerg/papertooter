@@ -3,10 +3,7 @@
 import sys
 import re 
 import argparse 
-from bs4 import BeautifulSoup as BS 
-import requests 
 from urllib.request import urlopen
-from urllib.error import HTTPError
 import crossref_commons.retrieval
 import json
 from mastodon import Mastodon
