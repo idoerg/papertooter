@@ -29,6 +29,10 @@ SHORT_DOI_URL = "https://shortdoi.org/"
 DOI_URL_RE = re.compile('http[s]{0,1}://doi.org')
 DOI_RE_P = re.compile('10\.[0-9]{4,}')
 DOI_RE = re.compile('10.\d{4,9}/[-._;()/:A-z0-9]+') 
+
+
+
+
 def shorten_doi(doi):
     doi_url = f"{SHORT_DOI_URL}{doi}?format=json"
     response = urlopen(doi_url)
@@ -54,7 +58,7 @@ def doi_to_hashtag(doi, to_shorten=True):
     return hashtag
 
 
-def toot_article(hashtag, title, public_url):
+def toot_article(mastodon, hashtag, title, public_url):
     toot = mastodon.toot(f'{title} {hashtag}\n {public_url}')
 
 def get_doi(instr):
@@ -75,8 +79,8 @@ def cli_parser():
     parser.add_argument('-l', '--longdoi', action='store_true', help="long doi form for the hashtag (default: short doi)") 
     parser.add_argument('-c', '--creds',  help="Mastodon user credentials file")
     return parser
-         
-if __name__ == '__main__':
+
+def main():
     doi = ''
     title = ''
     public_url = ''
@@ -105,6 +109,9 @@ if __name__ == '__main__':
     if not args.silent:
         if args.creds:
             mastodon = Mastodon(access_token = args.creds)
-            toot_article(hashtag, title, public_url)
+            toot_article(mastodon, hashtag, title, public_url)
         else: 
             raise ValueError("You need creds to toot!")
+         
+if __name__ == '__main__':
+    main()
